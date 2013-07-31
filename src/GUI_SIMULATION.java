@@ -14,6 +14,8 @@ public class GUI_SIMULATION
   
   // Attributes
   
+  private Timer RtsTimer;
+  
   // \ART_SMG :: Created for state : GUI_SIMULATION
   private RtsGUI_SIMULATION_States RtsCurrent_GUI_SIMULATION;
   
@@ -58,6 +60,50 @@ public class GUI_SIMULATION
   // ## OperationBody End 
   }
   
+  public GUI_SIMULATION()
+  {
+  // ## OperationBody [8d42ae50-5b0d-41c4-a081-780f2a2fd63b] 
+  RtsTimer=new Timer();
+  /* START_SMG_BODY */
+  
+  
+  RtsBusy = new Semaphore(1);
+  try
+  {
+    RtsBusy.acquire();
+  }
+  catch (InterruptedException e)
+  {}
+  
+  
+  /* Initialising State Vectors to NotIn */
+  RtsCurrent_GUI_SIMULATION=RtsGUI_SIMULATION_States.RtsGUI_SIMULATION_States_NotIn_GUI_SIMULATION;
+  
+  while(RtsRunToCompletion());
+  RtsBusy.release();
+  
+  /* END_SMG_BODY */
+  // ## OperationBody End 
+  }
+  
+  public void KeyPress()
+  {
+  // ## OperationBody [d8eedc1b-4ad4-4dbb-9511-2ae3c91efd85] 
+  /* START_SMG_BODY */
+  
+  try
+  {
+    RtsBusy.acquire();
+  }
+  catch (InterruptedException e)
+  {}
+  KeyPress_In_GUI_SIMULATION();
+  while(RtsRunToCompletion());
+  RtsBusy.release();
+  /* END_SMG_BODY */
+  // ## OperationBody End 
+  }
+  
   public static int TimerSet(boolean bPaused,
     Object TimerInstance,
     long lTimeToFire,
@@ -85,26 +131,6 @@ public class GUI_SIMULATION
   	return true;
   }
   return false;
-  }
-  
-  // \ART_SMG :: Constructor
-  public GUI_SIMULATION()
-  {
-  RtsBusy = new Semaphore(1);
-  Timer RtsTimer = new Timer();
-  try
-  {
-    RtsBusy.acquire();
-  }
-  catch (InterruptedException e)
-  {}
-  
-  
-  /* Initialising State Vectors to NotIn */
-  RtsCurrent_GUI_SIMULATION=RtsGUI_SIMULATION_States.RtsGUI_SIMULATION_States_NotIn_GUI_SIMULATION;
-  
-  while(RtsRunToCompletion());
-  RtsBusy.release();
   }
   
   // \ART_SMG :: Destructor
@@ -182,6 +208,23 @@ public class GUI_SIMULATION
   {
   	RtsExit_SecondState();
   	RtsEnter_FirstState();
+  	
+  	return true;
+  }
+  return false;
+  }
+  
+  private boolean KeyPress_In_GUI_SIMULATION()
+  {
+  if (RtsCurrent_GUI_SIMULATION == RtsGUI_SIMULATION_States.RtsGUI_SIMULATION_States_SecondState)
+  {
+  	RtsExit_SecondState();
+  	
+  // ## Action [1c3b63da-caca-4238-9e45-dd4a4bc58764] 
+  System.out.println("Key pressed");
+  // ## Action End 
+  
+  	RtsEnter_SecondState();
   	
   	return true;
   }

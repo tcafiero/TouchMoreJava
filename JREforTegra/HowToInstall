@@ -1,0 +1,28 @@
+Login over the network to the Raspberry Pi as user pi, and create a directory for the Java download: 
+$ ssh root@192.168.0.2 mkdir /dev/java
+
+
+Copy the Java download to the new directory on the Raspberry Pi: 
+$ scp ./ejre-7u21-fcs-b11-linux-arm-vfp-client_headful-04_apr_2013.gz root@192.168.0.2:/dev/java
+
+
+Unpack the Java download: 
+$ ssh root@192.168.0.2
+$ cd /dev/java
+$ tar -zxvf *.gz 
+...
+
+
+Launch Java: 
+$ ls ejre*
+ejre1.7.0_21
+$ cd ejre1.7.0_21
+$ ./bin/java -version 
+java version "1.7.0_21"
+Java(TM) SE Embedded Runtime Environment (build 1.7.0_21-b11)
+Java HotSpot(TM) Embedded Client VM (build 23.21-b01, mixed mode)
+
+
+Some details, such as version and build numbers, might have changed since this article was written.
+Optionally, remove the download file: 
+$ rm /dev/java/*.gz
